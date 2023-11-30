@@ -1,6 +1,6 @@
 module alu(
 		input [31:0] A,B, // 32-bit inputs
-		input [1:0] select, // selector bits
+		input [2:0] select, // selector bits
 		output [31:0] out, // output bit
 		output cOut      // carry out bit
 
@@ -16,14 +16,16 @@ module alu(
 	begin
 
 		case(select)
-		2'b00: // Addition
+		3'b000: // Addition
 			result = A + B;
-		2'b01: // AND
+		3'b001: // AND
 			result = A & B;
-		2'b10: // OR
+		3'b010: // OR
 			result = A | B;
-		2'b11: // Subtract
+		3'b011: // Subtract
 			result = A - B;
+		3'b100: // NOT
+			result = ~A;
 
 		default: result = A + B;
 		endcase
