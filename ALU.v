@@ -22,8 +22,8 @@ module alu(
 			result = A & B;
 		2'b10: // OR
 			result = A | B;
-		2'b11: // sll 2, for addressing
-			result = A << 2;
+		2'b11: // Subtract
+			result = A - B;
 
 		default: result = A + B;
 		endcase
