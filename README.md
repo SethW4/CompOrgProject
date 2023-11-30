@@ -25,13 +25,13 @@ _____________________________________________________
 
 Specs: 
 
-We're group 19. \\
+We're group 19. 
 
-Word Size: 32 bits\\
-Main Memory Size: 1 Gibibyte.\\ 
-Main Memory Organization: 256Mi x 16.\\ 
-Max number of bits to be used by L1 cache: 600,000.\\
-Additional Addressing Mode: Immediate\\
+Word Size: 32 bits
+Main Memory Size: 1 Gibibyte.
+Main Memory Organization: 256Mi x 16.
+Max number of bits to be used by L1 cache: 600,000.
+Additional Addressing Mode: Immediate
 
 
 _______________________________________
