@@ -33,6 +33,10 @@ Main Memory Organization: 256Mi x 16.
 Max number of bits to be used by L1 cache: 600,000.
 Additional Addressing Mode: Immediate
 
+______________________________________________________
+
+The coin flip says we're doing Big Endian addressing. 
+
 
 _______________________________________
 Icarus Verilog notes: 
