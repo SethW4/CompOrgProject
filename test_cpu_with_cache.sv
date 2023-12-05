@@ -27,6 +27,18 @@ module test_cpu;
       .we(we),
       .oe(oe)
   );
+
+  reg found;
+  wire [DATA_WIDTH-1:0] cache_data;
+
+  cache the_cache
+  ( .clk(clk),
+    .data(cache_data), 
+    .found(found),
+    .we(we),
+    .oe(oe)
+  );
+
   
   reg [31:0] A;
   reg [31:0] B;
@@ -97,7 +109,8 @@ module test_cpu;
             end
             4'b0010: begin   // load
                   @(posedge clk) MAR <= IR[11:0];
-                  @(posedge clk) MBR <= data;
+                  @(posedge clk) MBR = cache_data;                          // this is new, the = instead of <= is intentional. 
+                  @(posedge clk) MBR <= data;                               // for the write-through 
                   @(posedge clk) AC <= MBR;
             end
             4'b0011: begin    // store
