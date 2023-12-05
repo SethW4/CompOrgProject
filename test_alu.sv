@@ -3,7 +3,7 @@
 
 module test_alu;
 //Inputs
-reg[15:0] A,B;
+reg[31:0] A,B;
 reg[1:0] ALU_Sel;
 
 //Outputs
