@@ -52,5 +52,7 @@ Review.zip is the sample code
 The .sv files are the ones based off the sample code. 
 The .v files are our first attempt. 
 
+And I would totally move the old files to the test folder if I could, but GitHub is weird. 
+
 
 
