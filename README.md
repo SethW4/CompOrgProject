@@ -45,6 +45,10 @@ compiling: iverilog -o [outputName] [file1] [file2] [...]
 
 running: vvp [outputName]
 
+_______________________________________
+
+Review.zip is the sample code
+
 
 
 
