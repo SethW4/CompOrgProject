@@ -31,7 +31,7 @@ module test_cpu;
   reg [31:0] A;
   reg [31:0] B;
   reg [31:0] ALU_Out;
-  reg [1:0] ALU_Sel;
+  reg [2:0] ALU_Sel;
   alu alu16(
     .A(A),
     .B(B),  // ALU 16-bit Inputs
@@ -80,40 +80,101 @@ module test_cpu;
           @(posedge clk) IR <= data;
           @(posedge clk) PC <= PC + 1;
           // Decode and execute
-      case(IR[15:12])
-        4'b0001: begin
-              @(posedge clk) MAR <= IR[11:0];
-              @(posedge clk) MBR <= data;
-              @(posedge clk) AC <= MBR;
-        end 
-		4'b0010: begin
-              @(posedge clk) MAR <= IR[11:0];
-              @(posedge clk) MBR <= AC;
-              @(posedge clk) we <= 1; oe <= 0; testbench_data <= MBR;      
-        end
-        4'b0011: begin
-              @(posedge clk) MAR <= IR[11:0];
-              @(posedge clk) MBR <= data;
-              @(posedge clk) ALU_Sel <= 'b01; A <= AC; B <= MBR;
-              @(posedge clk) AC <= ALU_Out;
-        end
-        4'b0111: begin
-              @(posedge clk) PC <= PC - 1;
-        end
-        4'b1000: begin
-          @(posedge clk)
-          if(IR[11:10]==2'b01 && AC == 0) PC <= PC + 1;
-          else if(IR[11:10]==2'b00 && AC < 0) PC <= PC + 1;
-          else if(IR[11:10]==2'b10 && AC > 0) PC <= PC + 1;
-        end
-        4'b1001: begin
+          case(IR[31:30])
+          1'b0: begin            // Register addressing
+
+
+          case(IR[30:27])
+            4'b0000: begin  // add
+                  @(posedge clk) MAR <= IR[11:0];
+                  @(posedge clk) MBR <= data;
+                  @(posedge clk) ALU_Sel <= 'b001; A <= AC; B <= MBR;
+                  @(posedge clk) AC <= ALU_Out;
+            end 
+    		4'b0001: begin  // halt
+                  @(posedge clk) PC <= PC - 1;
+                       
+            end
+            4'b0010: begin   // load
+                  @(posedge clk) MAR <= IR[11:0];
+                  @(posedge clk) MBR <= data;
+                  @(posedge clk) AC <= MBR;
+            end
+            4'b0011: begin    // store
+                  @(posedge clk) MAR <= IR[11:0];
+                  @(posedge clk) MBR <= AC;
+                  @(posedge clk) we <= 1; oe <= 0; testbench_data <= MBR; 
+            end
+            4'b0100: begin  // clear
+                @(posedge clk) AC <= 0;
+                
+            end
+            4'b0101: begin  // skip 
+                @(posedge clk)
+                if(IR[11:10]==2'b01 && AC == 0) PC <= PC + 1;
+                else if(IR[11:10]==2'b00 && AC < 0) PC <= PC + 1;
+                else if(IR[11:10]==2'b10 && AC > 0) PC <= PC + 1;
+            end
+            4'b0110: begin // jump
               @(posedge clk) PC <= IR[11:0];
-        end
-        4'b1010: begin
-          @(posedge clk) AC <= 0;
-        end
-          
-      endcase
+            end
+
+            4'b0111: begin // subtract
+            @(posedge clk) MAR <= IR[11:0];
+            @(posedge clk) MBR <= data;
+            @(posedge clk) ALU_Sel <= 'b010; A <= AC; B <= MBR;   
+            @(posedge clk) AC <= ALU_Out;
+            end
+
+            4'b1000: begin // and
+            @(posedge clk) MAR <= IR[11:0];
+            @(posedge clk) MBR <= data;
+            @(posedge clk) ALU_Sel <= 'b000; A <= AC; B <= MBR;   
+            @(posedge clk) AC <= ALU_Out;
+            end
+
+            4'b1001: begin // or
+            @(posedge clk) MAR <= IR[11:0]
+            @(posedge clk) MBR <= data;
+            @(posedge clk) ALU_Sel <= 'b100; A <= AC; B <= MBR;   
+            @(posedge clk) AC <= ALU_Out;
+            end
+
+            4'b1000: begin // not
+            @(posedge clk) AC <= ~AC;
+            end
+              
+          endcase
+
+          end
+          1'b1: begin          // Immediate addressing
+
+          case(IR[30:27])
+            4'b0000: begin  // addi 
+                  @(posedge clk) AC <= AC + IR[11:0];
+            end 
+
+            4'b0111: begin // subi 
+              @(posedge clk) AC <= AC - IR[11:0];
+            end
+
+            4'b1000: begin // andi 
+              @(posedge clk) AC <= AC & IR[11:0];
+            end
+
+            4'b1001: begin // ori 
+              @(posedge clk) AC <= AC | IR[11:0];
+            end
+              
+          endcase
+
+
+
+
+
+          end
+          endcase
+
          
     end
     
