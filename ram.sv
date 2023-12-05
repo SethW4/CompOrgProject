@@ -4,7 +4,7 @@
 module single_port_sync_ram
   # (parameter ADDR_WIDTH = 14,
      parameter DATA_WIDTH = 8,
-     parameter LENGTH = (1<<(ADDR_WIDTH+10)) // Length of a single chip is 2^24 bits. 
+     parameter LENGTH = (1<<(ADDR_WIDTH+13)) // Length of a single chip is 2^27 bits. 
     )
 
   (   input clk,

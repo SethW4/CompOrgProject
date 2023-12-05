@@ -8,6 +8,13 @@
 // Ok we're down to 8 rows of RAM chips, and I *think* this works. 
 // I can confirm the math checks out, and this does in fact represent 256Mi x 16. 
 
+// Wait I did this wrong. 
+// So 256Mi x 16 with a total main memory size of 1 Gi means that each RAM chip must have a total length of 256Mi with a width of 16 bits, and that there should be four chips. 
+// Meaning that the length of a single chip of RAM is 134217728 bits, aka 256Mi / 16 bits.  
+// So basically exactly what we had in the starter code, just extended a bit. 
+
+// Fixed. I can now confirm with 99% certainty that the memory is correct. It at least has the right dimensions. 
+
 `timescale 1 ns / 1 ps
 
 module single_port_sync_ram_large
@@ -102,74 +109,5 @@ module single_port_sync_ram_large
       .oe(oe)
   );
 
-  // Col 1:
-  single_port_sync_ram  #(.DATA_WIDTH(DATA_WIDTH/2)) u40
-  (   .clk(clk),
-      .addr(addr[ADDR_WIDTH-1:0]),
-      .data(data[(DATA_WIDTH>>DATA_WIDTH_SHIFT)-1:0]),
-      .cs(cs[4]),
-      .we(we),
-      .oe(oe)
-  );
-  // Col 2:
-  single_port_sync_ram #(.DATA_WIDTH(DATA_WIDTH>>DATA_WIDTH_SHIFT)) u41
-  (   .clk(clk),
-      .addr(addr[ADDR_WIDTH-1:0]),
-      .data(data[DATA_WIDTH-1:DATA_WIDTH>>DATA_WIDTH_SHIFT]),
-      .cs(cs[4]),
-      .we(we),
-      .oe(oe)
-  );
-
-  single_port_sync_ram  #(.DATA_WIDTH(DATA_WIDTH/2)) u50
-  (   .clk(clk),
-      .addr(addr[ADDR_WIDTH-1:0]),
-      .data(data[(DATA_WIDTH>>DATA_WIDTH_SHIFT)-1:0]),
-      .cs(cs[5]),
-      .we(we),
-      .oe(oe)
-  );
-  single_port_sync_ram #(.DATA_WIDTH(DATA_WIDTH>>DATA_WIDTH_SHIFT)) u51
-  (   .clk(clk),
-      .addr(addr[ADDR_WIDTH-1:0]),
-      .data(data[DATA_WIDTH-1:DATA_WIDTH>>DATA_WIDTH_SHIFT]),
-      .cs(cs[5]),
-      .we(we),
-      .oe(oe)
-  );
-
-  single_port_sync_ram  #(.DATA_WIDTH(DATA_WIDTH/2)) u60
-  (   .clk(clk),
-      .addr(addr[ADDR_WIDTH-1:0]),
-      .data(data[(DATA_WIDTH>>DATA_WIDTH_SHIFT)-1:0]),
-      .cs(cs[6]),
-      .we(we),
-      .oe(oe)
-  );
-  single_port_sync_ram #(.DATA_WIDTH(DATA_WIDTH>>DATA_WIDTH_SHIFT)) u61
-  (   .clk(clk),
-      .addr(addr[ADDR_WIDTH-1:0]),
-      .data(data[DATA_WIDTH-1:DATA_WIDTH>>DATA_WIDTH_SHIFT]),
-      .cs(cs[6]),
-      .we(we),
-      .oe(oe)
-  );
-
-  single_port_sync_ram  #(.DATA_WIDTH(DATA_WIDTH/2)) u60
-  (   .clk(clk),
-      .addr(addr[ADDR_WIDTH-1:0]),
-      .data(data[(DATA_WIDTH>>DATA_WIDTH_SHIFT)-1:0]),
-      .cs(cs[7]),
-      .we(we),
-      .oe(oe)
-  );
-  single_port_sync_ram #(.DATA_WIDTH(DATA_WIDTH>>DATA_WIDTH_SHIFT)) u61
-  (   .clk(clk),
-      .addr(addr[ADDR_WIDTH-1:0]),
-      .data(data[DATA_WIDTH-1:DATA_WIDTH>>DATA_WIDTH_SHIFT]),
-      .cs(cs[7]),
-      .we(we),
-      .oe(oe)
-  );
 
 endmodule
