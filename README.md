@@ -49,7 +49,8 @@ _______________________________________
 
 Review.zip is the sample code
 
-
+The .sv files are the ones based off the sample code. 
+The .v files are our first attempt. 
 
 
 
