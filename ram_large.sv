@@ -1,5 +1,5 @@
 // Adopted from https://www.chipverify.com/verilog/verilog-single-port-ram
-// `include "ram.sv"   // uncomment this if you need it? I think it just makes things crash otherwise. 
+`include "ram.sv"   // uncomment this if you need it? I think it just makes things crash otherwise. 
 `include "decoder.sv"
 
 // Our main memory specs: 256Mi x 16 == 2147483648 bits x 16, aka 32768 rows of RAM??? 

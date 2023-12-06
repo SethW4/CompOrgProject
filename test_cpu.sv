@@ -30,7 +30,7 @@ module test_cpu;
   
   reg [31:0] A;
   reg [31:0] B;
-  reg [31:0] ALU_Out;
+  wire [31:0] ALU_Out;
   reg [2:0] ALU_Sel;
   alu alu16(
     .A(A),
