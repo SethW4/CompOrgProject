@@ -7,71 +7,74 @@
 10C	Store B        // B = temp = F_2
 10E	Load control
 110	Subi 1         // control-- 
-112	Skip 01 control // 01 specifies skip on equal 
-114 Jump 100
-116	Halt
-118 control Dec 10
-11A temp Dec 0
-11C A Dec 0        // F_0
-11E B Dec 1        // F_1
+112	Store control  // AC -> control
+114	Skip 01 control // 01 specifies skip on equal 
+116 Jump 100
+118	Halt
+11A control Dec 10
+11C temp Dec 0
+11E A Dec 0        // F_0
+120 B Dec 1        // F_1
 
 _______________________________________________________
 
 Translates to: 
 _______________________________________________________
 
-// 0 0010 000000000000000 11C         // Load A  == 0001 0000 0000 0000 0000 11C == 1000011C
-@(posedge clk) MAR <= 'h100; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011C; 
-// 0 0000 000000000000000 11E         // Add B   == 0000 0000 0000 0000 0000 11E == 0000011E
-@(posedge clk) MAR <= 'h102; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h0000011E;
-// 0 0011 000000000000000 11A         // Store temp == 0001 1000 0000 0000 0000 11A == 1800011A
-@(posedge clk) MAR <= 'h104; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011A;
-// 0 0010 000000000000000 11E         // Load B  == 0001 0000 0000 0000 0000 11E == 1000011E
-@(posedge clk) MAR <= 'h106; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011E;
-// 0 0011 000000000000000 11C         // Store A == 0001 1000 0000 0000 0000 11C == 1800011C
-@(posedge clk) MAR <= 'h108; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011C;
-// 0 0010 000000000000000 11A         // Load temp == 0001 0000 0000 0000 0000 11A == 1000011A
-@(posedge clk) MAR <= 'h1A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011A;
-// 0 0011 000000000000000 10C         // Store B   == 0001 1000 0000 0000 0000 10C == 1800010C
-@(posedge clk) MAR <= 'h10C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800010C;
-// 0 0010 000000000000000 118         // Load control  == 0001 0000 0000 0000 0000 118 == 10000118
-@(posedge clk) MAR <= 'h10E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h10000118;
+// 0 0010 000000000000000 11E         // Load A  == 0001 0000 0000 0000 0000 11E == 1000011E
+@(posedge clk) MAR <= 'h100; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011E; 
+// 0 0000 000000000000000 120         // Add B   == 0000 0000 0000 0000 0000 120 == 00000120
+@(posedge clk) MAR <= 'h102; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h00000120;
+// 0 0011 000000000000000 11C         // Store temp == 0001 1000 0000 0000 0000 11C == 1800011C
+@(posedge clk) MAR <= 'h104; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011C;
+// 0 0010 000000000000000 120         // Load B  == 0001 0000 0000 0000 0000 120 == 10000120
+@(posedge clk) MAR <= 'h106; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h10000120;
+// 0 0011 000000000000000 11E         // Store A == 0001 1000 0000 0000 0000 11E == 1800011E
+@(posedge clk) MAR <= 'h108; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011E;
+// 0 0010 000000000000000 11C         // Load temp == 0001 0000 0000 0000 0000 11C == 1000011C
+@(posedge clk) MAR <= 'h10A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011C;
+// 0 0011 000000000000000 120         // Store B   == 0001 1000 0000 0000 0000 120 == 18000120
+@(posedge clk) MAR <= 'h10C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h18000120;
+// 0 0010 000000000000000 11A         // Load control  == 0001 0000 0000 0000 0000 11A == 1000011A
+@(posedge clk) MAR <= 'h10E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011A;
 // 1 0111 000000000000000 001         // Subi 1     == 1011 1000 0000 0000 0000 001 == B8000001
 @(posedge clk) MAR <= 'h110; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'hB8000001;
+// 0 0011 000000000000000 11A         // Store control  == 0001 1000 0000 0000 0000 11A == 1800011A
+@(posedge clk) MAR <= 'h112; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011A;
 // 0 0101 000000000000000 400         // Skip 01 control  == 0010 1000 0000 0000 0000 400 == 28000400
-@(posedge clk) MAR <= 'h112; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h28000400;
+@(posedge clk) MAR <= 'h114; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h28000400;
 // 0 0110 000000000000000 100         // Jump 100  == 0011 0000 0000 0000 0000 100 == 30000100
-@(posedge clk) MAR <= 'h114; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h30000100;
+@(posedge clk) MAR <= 'h116; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h30000100;
 // 0 0001 000000000000000 000         // Halt == 0000 1000 0000 0000 0000 000      == 08000000
-@(posedge clk) MAR <= 'h116; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h08000000;
+@(posedge clk) MAR <= 'h118; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h08000000;
 // 0 1111 000000000000000 00A         // control Dec 10  == 0111 1000 0000 0000 0000 00A == 7800000A
-@(posedge clk) MAR <= 'h118; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h7800000A;
+@(posedge clk) MAR <= 'h11A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h7800000A;
 // 0 1111 000000000000000 000         // temp Dec 0 == 0111 1000 0000 0000 0000 000 == 78000000
-@(posedge clk) MAR <= 'h11A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
-// 0 1111 000000000000000 000         // A Dec 0   == 0111 1000 0000 0000 0000 000 == 78000000
 @(posedge clk) MAR <= 'h11C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
+// 0 1111 000000000000000 000         // A Dec 0   == 0111 1000 0000 0000 0000 000 == 78000000
+@(posedge clk) MAR <= 'h11E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
 // 0 1111 000000000000000 001         // B Dec 1 == 0111 1000 0000 0000 0000 001   == 78000001
-@(posedge clk) MAR <= 'h11E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000001;
+@(posedge clk) MAR <= 'h120; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000001;
 
 ______________________________________________________
 
 The code for that: 
 
-@(posedge clk) MAR <= 'h100; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011C; 
-@(posedge clk) MAR <= 'h102; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h0000011E;
-@(posedge clk) MAR <= 'h104; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011A;
-@(posedge clk) MAR <= 'h106; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011E;
-@(posedge clk) MAR <= 'h108; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011C;
-@(posedge clk) MAR <= 'h1A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011A;
-@(posedge clk) MAR <= 'h10C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800010C;
-@(posedge clk) MAR <= 'h10E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h10000118;
+@(posedge clk) MAR <= 'h100; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011E; 
+@(posedge clk) MAR <= 'h102; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h00000120;
+@(posedge clk) MAR <= 'h104; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011C;
+@(posedge clk) MAR <= 'h106; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h10000120;
+@(posedge clk) MAR <= 'h108; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011E;
+@(posedge clk) MAR <= 'h10A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011C;
+@(posedge clk) MAR <= 'h10C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h18000120;
+@(posedge clk) MAR <= 'h10E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011A;
 @(posedge clk) MAR <= 'h110; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'hB8000001;
-@(posedge clk) MAR <= 'h112; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h28000400;
-@(posedge clk) MAR <= 'h114; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h30000100;
-@(posedge clk) MAR <= 'h116; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h08000000;
-@(posedge clk) MAR <= 'h118; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h7800000A;
-@(posedge clk) MAR <= 'h11A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
+@(posedge clk) MAR <= 'h112; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011A;
+@(posedge clk) MAR <= 'h114; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h28000400;
+@(posedge clk) MAR <= 'h116; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h30000100;
+@(posedge clk) MAR <= 'h118; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h08000000;
+@(posedge clk) MAR <= 'h11A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h7800000A;
 @(posedge clk) MAR <= 'h11C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
-@(posedge clk) MAR <= 'h11E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000001;
-
+@(posedge clk) MAR <= 'h11E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
+@(posedge clk) MAR <= 'h120; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000001;
 
