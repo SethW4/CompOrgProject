@@ -1,5 +1,5 @@
 // I don't know what this exactly means, but I trust it
-`timescale 1ns / 1ps 
+`timescale 1ns / 1ps
 
 module tb_alu;
 	reg[31:0] A,B;
@@ -16,7 +16,7 @@ module tb_alu;
 			CarryOut
 		);
 	initial begin
-	// Hold reset state for 100ns. For some reason. 
+	// Hold reset state for 100ns. For some reason.
 	A = 32'b01;
 	B = 32'b10;
 	select = 2'b0;
