@@ -1,6 +1,8 @@
 # CompOrgProject
 Just a processor. Nothing crazy. 
 __________
+Current State of Processor: Effective Halting Problem Simulator
+__________
 TO-DO:
 __________
 
