@@ -6,22 +6,26 @@ __________
 TO-DO:
 __________
 
-1.
-~~
-Make a Verilog file for each component
+1. 
 
-Write an assembly language for this
+~~Make a Verilog file for each component~~
 
-Write the datapath in Verilog
+~~Write an assembly language for this~~
 
-Make a testbench with the assembly code for the benchmarks in the project description
+~~Write the datapath in Verilog~~
+
+~~Make a testbench with the assembly code for the benchmarks in the project description~~
 
 1a. 
-Implement everything on that table he gave us. 
+~~Implement everything on that table he gave us.~~
 
 1b. 
-Implement a data cache split into two rows with a cell size of 16 bits each. See the table. 
-~~
+~~Implement a data cache split into two rows with a cell size of 16 bits each. See the table.~~ 
+
+
+Figure out what's not working and why. Currently when you run it under any set of instructions it will enter an infinite loop somewhere, before the instructions even begin. I'm not too sure what's up with that.  
+
+
 And then any extra credit y'all feel up to 
 _____________________________________________________
 
