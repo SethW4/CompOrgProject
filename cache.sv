@@ -9,7 +9,7 @@
 module cache
   (   input clk,
       inout [31:0] data,
-      input found,
+      inout found,
       input we,
       input oe
   );
