@@ -25,6 +25,8 @@ __________
 
 Figure out what's not working and why. Currently when you run it under any set of instructions it will enter an infinite loop somewhere, before the instructions even begin. I'm not too sure what's up with that.  
 
+Update: It's not the cache that isn't working, since you get the same loop in the non-cache version. 
+
 
 And then any extra credit y'all feel up to 
 _____________________________________________________
