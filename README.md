@@ -7,7 +7,7 @@ TO-DO:
 __________
 
 1.
-
+~~
 Make a Verilog file for each component
 
 Write an assembly language for this
@@ -21,7 +21,7 @@ Implement everything on that table he gave us.
 
 1b. 
 Implement a data cache split into two rows with a cell size of 16 bits each. See the table. 
-
+~~
 And then any extra credit y'all feel up to 
 _____________________________________________________
 
