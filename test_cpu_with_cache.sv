@@ -30,6 +30,9 @@ module test_cpu;
 
   reg found;
   wire [DATA_WIDTH-1:0] cache_data;
+  reg [DATA_WIDTH-1:0] cache_reg;  // because Verilog is finnicky and you can't just set the value of a wire to something. 
+
+  assign cache_data = cache_reg; // See above. 
 
   reg cwe;
   reg coe;
@@ -45,7 +48,7 @@ module test_cpu;
   
   reg [31:0] A;
   reg [31:0] B;
-  reg [31:0] ALU_Out;
+  wire [31:0] ALU_Out;
   reg [2:0] ALU_Sel;
   alu alu16(
     .A(A),
@@ -115,7 +118,7 @@ module test_cpu;
                   @(posedge clk) MBR = cache_data;                          // this is new, the = instead of <= is intentional. 
                   if(!found) begin
                     @(posedge clk) MBR <= data;  // read from main memory instead 
-                    cache_data <= data;
+                    cache_reg <= data;
                     cwe <= 1;
                     coe <= 1;
                     @(posedge clk)
@@ -128,7 +131,8 @@ module test_cpu;
             4'b0011: begin    // store
                   @(posedge clk) MAR <= IR[11:0];
                   @(posedge clk) MBR <= AC;
-                  @(posedge clk) we <= 1; oe <= 0; cwe <= 1; coe <= 1; testbench_data <= MBR; cache_data <= MBR; // for write-through. 
+                  @(posedge clk) we <= 1; oe <= 0; cwe <= 1; coe <= 1; testbench_data <= MBR; 
+                  cache_reg <= MBR; // for write-through. 
                   
                   @(posedge clk)
                   cwe <= 0;

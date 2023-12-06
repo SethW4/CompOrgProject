@@ -8,7 +8,7 @@
 
 module cache
   (   input clk,
-      input [31:0] data,
+      inout [31:0] data,
       input found,
       input we,
       input oe
