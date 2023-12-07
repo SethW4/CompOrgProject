@@ -71,6 +71,9 @@ module test_cpu;
     
 
   initial begin
+
+
+
    
      $dumpfile("dump.vcd");
      $dumpvars;
@@ -93,14 +96,20 @@ module test_cpu;
     //@(posedge clk) MAR <= 'h10F; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'hFFFF;
 
 
-    // $display("%h", PC);
-
+    
+    //$display("%h\n", MAR);
     @(posedge clk) MAR <= 'h100; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011E; 
+    $display("%h And some other stuff\n", MAR); 
     @(posedge clk) MAR <= 'h102; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h00000120;
+    $display("%h\n", MAR);
     @(posedge clk) MAR <= 'h104; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011C;
+    $display("%h\n", MAR);
     @(posedge clk) MAR <= 'h106; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h10000120;
+    $display("%h\n", MAR);
     @(posedge clk) MAR <= 'h108; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011E;
+    $display("%h\n", MAR);
     @(posedge clk) MAR <= 'h10A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011C;
+    $display("%h\n", MAR);
     @(posedge clk) MAR <= 'h10C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h18000120;
     @(posedge clk) MAR <= 'h10E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011A;
     @(posedge clk) MAR <= 'h110; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'hB8000001;
@@ -113,7 +122,10 @@ module test_cpu;
     @(posedge clk) MAR <= 'h11E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
     @(posedge clk) MAR <= 'h120; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000001;
       
-    
+
+
+
+
     @(posedge clk) PC <= 'h100;
     
     for (i = 0; i < 62; i = i+1) begin
