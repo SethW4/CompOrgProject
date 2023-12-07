@@ -1,24 +1,32 @@
 # CompOrgProject
 Just a processor. Nothing crazy. 
 __________
+Current State of Processor: Effective Halting Problem Simulator
+__________
 TO-DO:
 __________
 
-1.
+1. 
 
-Make a Verilog file for each component
+~~Make a Verilog file for each component~~
 
-Write an assembly language for this
+~~Write an assembly language for this~~
 
-Write the datapath in Verilog
+~~Write the datapath in Verilog~~
 
-Make a testbench with the assembly code for the benchmarks in the project description
+~~Make a testbench with the assembly code for the benchmarks in the project description~~
 
 1a. 
-Implement everything on that table he gave us. 
+~~Implement everything on that table he gave us.~~
 
 1b. 
-Implement a data cache split into two rows with a cell size of 16 bits each. See the table. 
+~~Implement a data cache split into two rows with a cell size of 16 bits each. See the table.~~ 
+
+
+Figure out what's not working and why. Currently when you run it under any set of instructions it will enter an infinite loop somewhere, before the instructions even begin. I'm not too sure what's up with that.  
+
+Update: It's not the cache that isn't working, since you get the same loop in the non-cache version. 
+
 
 And then any extra credit y'all feel up to 
 _____________________________________________________
@@ -45,7 +53,14 @@ compiling: iverilog -o [outputName] [file1] [file2] [...]
 
 running: vvp [outputName]
 
+_______________________________________
 
+Review.zip is the sample code
+
+The .sv files are the ones based off the sample code. 
+The .v files are our first attempt. 
+
+And I would totally move the old files to the test folder if I could, but GitHub is weird. 
 
 
 
