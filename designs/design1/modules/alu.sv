@@ -11,6 +11,8 @@ module alu(
     assign ALU_Out = ALU_Result; // ALU out
     always @(*)
     begin
+
+
         case(ALU_Sel)
         3'b001: // Addition
            ALU_Result = A + B ;
@@ -24,6 +26,7 @@ module alu(
             ALU_Result = A | B;
         default: ALU_Result = A;
         endcase
+
     end
 
 endmodule
