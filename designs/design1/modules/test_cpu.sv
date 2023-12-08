@@ -125,7 +125,6 @@ module test_cpu;
 
             end
             4'b0101: begin  // skip
-                //$display("%h THIS SKIPS!!!\n", MAR);
                 @(posedge clk)
                 if(IR[11:10]==2'b01 && AC == 0) PC <= PC + 2;
                 else if(IR[11:10]==2'b00 && AC < 0) PC <= PC + 2;
