@@ -27,7 +27,7 @@ __________
 ~~Figure out what's not working and why. Currently when you run it under any set of instructions it will enter an infinite loop somewhere, before the instructions even begin. I'm not too sure what's up with that.~~ 
 
 Update: It's not the cache that isn't working, since you get the same loop in the non-cache version. 
-  Update to the Update: The cache is now the only thing that isn't working. 
+  Update to the Update: The cache is now the only thing that isn't working perfectly. 
 
 
 And then any extra credit y'all feel up to 
@@ -66,7 +66,9 @@ And I would totally move the old files to the test folder if I could, but GitHub
 
 _______________________________________
 
-Design 1: Under the design1 folder, every module you need is under the modules folder, and every testbench you need is under testbenches. 
+For the graders: 
+
+Design 1: Under the design1 folder, every module and testbench you need is under the modules folder. 
 
 Design 1a and 1b: Under the design1 folder, every module and testbench you need is under the modules folder. 
 
