@@ -1,7 +1,7 @@
 `timescale 1 ns / 1 ps
 
 module test_cpu;
-  parameter ADDR_WIDTH = 14; // used to be 14
+  parameter ADDR_WIDTH = 14;
   parameter DATA_WIDTH = 32;
 
   reg osc;
@@ -32,17 +32,20 @@ module test_cpu;
   reg [31:0] B;
   wire [31:0] ALU_Out;
   reg [2:0] ALU_Sel;
-  alu alu16(
+  alu alu32(
     .A(A),
-    .B(B),  // ALU 16-bit Inputs
-    .ALU_Sel(ALU_Sel),// ALU Selection
-    .ALU_Out(ALU_Out) // ALU 16-bit Output
+    .B(B),
+    .ALU_Sel(ALU_Sel),
+    .ALU_Out(ALU_Out)
      );
 
   reg [31:0] PC = 'h100;
   reg [31:0] IR = 'h0;
   reg [31:0] MBR = 'h0;
   reg [31:0] AC = 'h0;
+
+  //Store current fibonacci iterator
+  integer fib = 1;
 
   initial osc = 1;  //init clk = 1 for positive-edge triggered
   always begin  // Clock wave
@@ -53,31 +56,8 @@ module test_cpu;
 
      $dumpfile("dump.vcd");
      $dumpvars;
-    // Multiplication by addition program
 
-    /*
-    // Immediate Addressing:
-    // New code, and I'm POSITIVE this version works.
-    @(posedge clk) MAR <= 'h100; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011E;
-    @(posedge clk) MAR <= 'h102; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h00000120;
-    @(posedge clk) MAR <= 'h104; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011C;
-    @(posedge clk) MAR <= 'h106; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h10000120;
-    @(posedge clk) MAR <= 'h108; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011E;
-    @(posedge clk) MAR <= 'h10A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011C;
-    @(posedge clk) MAR <= 'h10C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h18000120;
-    @(posedge clk) MAR <= 'h10E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011A;
-    @(posedge clk) MAR <= 'h110; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'hB8000001;
-    @(posedge clk) MAR <= 'h112; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011A;
-    @(posedge clk) MAR <= 'h114; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h28000400;
-    @(posedge clk) MAR <= 'h116; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h30000100;
-    @(posedge clk) MAR <= 'h118; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h08000000;
-    @(posedge clk) MAR <= 'h11A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000009;
-    @(posedge clk) MAR <= 'h11C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
-    @(posedge clk) MAR <= 'h11E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
-    @(posedge clk) MAR <= 'h120; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000001;
-    */
-
-    // Direct Addressing Only:
+    // Direct Addressing Only Implementation
     @(posedge clk) MAR <= 'h100; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011E;
     @(posedge clk) MAR <= 'h102; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h00000120;
     @(posedge clk) MAR <= 'h104; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011C;
@@ -98,21 +78,16 @@ module test_cpu;
     @(posedge clk) MAR <= 'h122; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000001;
 
 
-
     @(posedge clk) PC <= 'h100;
 
+    $display("Fib:%0d -> AC:%d\n",fib - 1, AC[11:0]);
+    $display("Fib:%0d -> AC:%d\n",fib, AC[11:0]);
+
     for (i = 0; i < 135; i = i+1) begin
-
-    $display("%h\n", MAR);
-
           // Fetch
           @(posedge clk) MAR <= PC; we <= 0; cs <= 1; oe <= 1;
           @(posedge clk) IR <= data;
           @(posedge clk) PC <= PC + 2;
-          // Decode and execute
-          case(IR[31])
-          1'b0: begin            // Register addressing
-
 
           case(IR[30:27])
             4'b0000: begin  // add
@@ -120,9 +95,12 @@ module test_cpu;
                   @(posedge clk) MBR <= data;
                   @(posedge clk) ALU_Sel <= 'b001; A <= AC; B <= MBR;
                   @(posedge clk) AC <= ALU_Out;
+                  @(posedge clk) fib = fib + 1;
+
+                  #1
+                  $display("Fib:%0d -> AC:%d\n",fib, AC[11:0]);
             end
         4'b0001: begin  // halt
-                  $display("%h THIS HALTS!!!\n", MAR);  // This never halts.
                   @(posedge clk) PC <= PC - 2;
 
 
@@ -132,15 +110,15 @@ module test_cpu;
                   @(posedge clk) MAR <= IR[26:0];
                   @(posedge clk) MBR <= data;
                   @(posedge clk) AC <= MBR;
-                  #1
-                  $display("%b AC %h %d\n", AC, MAR, AC[11:0]);
+
             end
             4'b0011: begin    // store
                   @(posedge clk) MAR <= IR[26:0];
                   @(posedge clk) MBR <= AC;
                   @(posedge clk) we <= 1; oe <= 0; testbench_data <= MBR;
-                  //#1
-                  //$display("%b AC %h %d\n", AC, MAR, AC[11:0]);
+
+
+
             end
             4'b0100: begin  // clear
                 @(posedge clk) AC <= 0;
@@ -153,7 +131,6 @@ module test_cpu;
                 else if(IR[11:10]==2'b00 && AC < 0) PC <= PC + 2;
                 else if(IR[11:10]==2'b10 && AC > 0) PC <= PC + 2;
                 else if(IR[11:10]==2'b01 && AC[26:0] == 27'b111111111111111111111111111) PC <= PC + 2;
-                $display("Hello World! %b %b\n", AC, IR[11:10]);
             end
             4'b0110: begin // jump
               @(posedge clk) PC <= IR[26:0];
@@ -185,37 +162,6 @@ module test_cpu;
             end
 
           endcase
-
-          end
-          1'b1: begin          // Immediate addressing
-
-          case(IR[30:27])
-            4'b0000: begin  // addi
-                  @(posedge clk) AC <= AC + IR[26:0];
-            end
-
-            4'b0111: begin // subi
-              @(posedge clk) AC <= AC - IR[26:0];
-            end
-
-            4'b1000: begin // andi
-              @(posedge clk) AC <= AC & IR[26:0];
-            end
-
-            4'b1001: begin // ori
-              @(posedge clk) AC <= AC | IR[26:0];
-            end
-
-          endcase
-
-
-
-
-
-          end
-          endcase
-
-
     end
 
 

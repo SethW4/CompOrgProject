@@ -9,7 +9,7 @@ module single_port_sync_ram_large
       parameter DATA_WIDTH = 32,
       parameter DATA_WIDTH_SHIFT = 1
     )
-  
+
   (   input clk,
       input [ADDR_WIDTH-1:0] addr,
       inout [DATA_WIDTH-1:0] data,
@@ -17,14 +17,14 @@ module single_port_sync_ram_large
       input we,
       input oe
   );
-  
+
   wire [3:0] cs;
-  
+
   decoder #(.ENCODE_WIDTH(2)) dec
   (   .in(addr[ADDR_WIDTH-1:ADDR_WIDTH-2]),
-      .out(cs) 
+      .out(cs)
   );
-  
+
   single_port_sync_ram  #(.DATA_WIDTH(DATA_WIDTH/2)) u00
   (   .clk(clk),
       .addr(addr[ADDR_WIDTH-3:0]),

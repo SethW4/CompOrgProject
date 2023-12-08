@@ -2,7 +2,7 @@
 `timescale 1 ns / 1 ps
 
 module single_port_sync_ram
-  # (parameter ADDR_WIDTH = 12, // used to be 12 -- 26
+  # (parameter ADDR_WIDTH = 12,
      parameter DATA_WIDTH = 16,
      parameter LENGTH = (1<<ADDR_WIDTH)
     )
@@ -19,12 +19,10 @@ module single_port_sync_ram
   reg [DATA_WIDTH-1:0] mem[LENGTH];
 
   always @ (posedge clk) begin
-    // Used when debugging a multiplication program
-    // if (addr=='h10D) $display("Product is %d", mem[addr]);
     if (cs & we)
       mem[addr] <= data;
   end
-  
+
   always @ (negedge clk) begin
     if (cs & !we)
       tmp_data <= mem[addr];
