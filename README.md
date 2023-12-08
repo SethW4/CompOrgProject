@@ -1,7 +1,8 @@
 # CompOrgProject
 Just a processor. Nothing crazy. 
 __________
-Current State of Processor: Effective Halting Problem Simulator
+Current State of Processor: ~~Effective Halting Problem Simulator~~
+Basically Turing Complete, just finnicky. 
 __________
 TO-DO:
 __________
@@ -23,9 +24,10 @@ __________
 ~~Implement a data cache split into two rows with a cell size of 16 bits each. See the table.~~ 
 
 
-Figure out what's not working and why. Currently when you run it under any set of instructions it will enter an infinite loop somewhere, before the instructions even begin. I'm not too sure what's up with that.  
+~~Figure out what's not working and why. Currently when you run it under any set of instructions it will enter an infinite loop somewhere, before the instructions even begin. I'm not too sure what's up with that.~~ 
 
 Update: It's not the cache that isn't working, since you get the same loop in the non-cache version. 
+  Update to the Update: The cache is now the only thing that isn't working. 
 
 
 And then any extra credit y'all feel up to 
@@ -57,10 +59,16 @@ _______________________________________
 
 Review.zip is the sample code
 
-The .sv files are the ones based off the sample code. 
-The .v files are our first attempt. 
+The .sv files are the ones based off the sample code. These work. 
+The .v files are our first attempt. Ignore these. 
 
 And I would totally move the old files to the test folder if I could, but GitHub is weird. 
+
+_______________________________________
+
+Design 1: Under the design1 folder, every module you need is under the modules folder, and every testbench you need is under testbenches. 
+
+Design 1a and 1b: Under the design1 folder, every module and testbench you need is under the modules folder. 
 
 
 
