@@ -6,7 +6,7 @@
 
 module single_port_sync_ram_large
   # ( parameter ADDR_WIDTH = 14,
-      parameter DATA_WIDTH = 16,
+      parameter DATA_WIDTH = 32,
       parameter DATA_WIDTH_SHIFT = 1
     )
   

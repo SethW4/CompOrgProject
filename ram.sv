@@ -3,7 +3,7 @@
 
 module single_port_sync_ram
   # (parameter ADDR_WIDTH = 12,
-     parameter DATA_WIDTH = 8,
+     parameter DATA_WIDTH = 16,
      parameter LENGTH = (1<<ADDR_WIDTH)
     )
 
