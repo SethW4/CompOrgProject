@@ -29,7 +29,7 @@ For the graders:
 
 Design 1: Under the design1 folder, every module and testbench you need is under the modules folder. 
 
-Design 1a and 1b: Under the design1a-b folder, every module and testbench you need is under the modules folder. 
+Design 1a and 1b: Under the design1a folder, every module and testbench you need is under the modules folder. 
 
 
 
