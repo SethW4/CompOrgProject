@@ -153,7 +153,7 @@ module test_cpu;
         
     @(posedge clk) PC <= 'h100;
     
-    for (i = 0; i < 125; i = i+1) begin
+    for (i = 0; i < 135; i = i+1) begin
 
     $display("%h\n", MAR);
 
@@ -202,6 +202,8 @@ module test_cpu;
                 if(IR[11:10]==2'b01 && AC == 0) PC <= PC + 2; 
                 else if(IR[11:10]==2'b00 && AC < 0) PC <= PC + 2; 
                 else if(IR[11:10]==2'b10 && AC > 0) PC <= PC + 2; 
+                else if(IR[11:10]==2'b01 && AC[26:0] == 27'b111111111111111111111111111) PC <= PC + 2;
+                $display("Hello World! %b %b\n", AC, IR[11:10]);
             end
             4'b0110: begin // jump
               @(posedge clk) PC <= IR[26:0];
