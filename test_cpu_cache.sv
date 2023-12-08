@@ -17,7 +17,9 @@ module test_cpu;
   reg [ADDR_WIDTH-1:0] MAR;
   wire [DATA_WIDTH-1:0] data;
   reg [DATA_WIDTH-1:0] testbench_data;
-  assign data = !oe ? testbench_data : 'hz;
+  
+
+  // assign data = !oe ? testbench_data : 'hz;
 
   single_port_sync_ram_large  #(.DATA_WIDTH(DATA_WIDTH)) ram
   (   .clk(clk),
@@ -27,6 +29,47 @@ module test_cpu;
       .we(we),
       .oe(oe)
   );
+
+
+
+  reg found;
+  wire [DATA_WIDTH-1:0] cache_data;
+  reg [DATA_WIDTH-1:0] cache_reg;  // because Verilog is finnicky and you can't just set the value of a wire to something. 
+
+  assign cache_data = cache_reg; // See above. 
+
+  reg cwe;
+  reg coe;
+
+  cache the_cache
+  ( .clk(clk),
+    .data(cache_data), 
+    .found(found),
+    .we(cwe),
+    .oe(coe)
+  );
+
+
+  assign data = (!oe && !found) ? testbench_data : 'hz;
+  assign cache_data = (!oe && !found) ? testbench_data : 'hz;
+  assign data = (!oe && found) ? cache_data : 'hz;
+
+
+  /*
+  always @(*) begin
+    if(!oe && (found == '0)) 
+    begin
+      data = testbench_data;
+      assign cache_data = testbench_data;
+    end
+    else if(!oe && found)
+      assign data = cache_data;
+    else 
+      assign data = 'hz;
+  end
+  */
+
+
   
   reg [31:0] A;
   reg [31:0] B;
@@ -50,6 +93,19 @@ module test_cpu;
   end
 
   initial begin
+
+
+    /*
+    if(!oe && (found == '0)) 
+    begin
+      data <= testbench_data;
+      cache_data <= testbench_data;
+    end
+    else if(!oe && found)
+      data <= cache_data;
+    else 
+      data <= 'hz;
+    */
    
      $dumpfile("dump.vcd");
      $dumpvars;
@@ -132,7 +188,6 @@ module test_cpu;
     */
 
 
-    // Immediate Addressing: 
     // New code, and I'm POSITIVE this version works. 
     @(posedge clk) MAR <= 'h100; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011E;
     @(posedge clk) MAR <= 'h102; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h00000120;
@@ -151,34 +206,10 @@ module test_cpu;
     @(posedge clk) MAR <= 'h11C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
     @(posedge clk) MAR <= 'h11E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
     @(posedge clk) MAR <= 'h120; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000001;
-    
-
-    // Direct Addressing Only:
-    /*
-    @(posedge clk) MAR <= 'h100; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011E;
-    @(posedge clk) MAR <= 'h102; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h00000120;
-    @(posedge clk) MAR <= 'h104; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011C;
-    @(posedge clk) MAR <= 'h106; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h10000120;
-    @(posedge clk) MAR <= 'h108; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011E;
-    @(posedge clk) MAR <= 'h10A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011C;
-    @(posedge clk) MAR <= 'h10C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h18000120;
-    @(posedge clk) MAR <= 'h10E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1000011A;
-    @(posedge clk) MAR <= 'h110; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h38000122;
-    @(posedge clk) MAR <= 'h112; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h1800011A;
-    @(posedge clk) MAR <= 'h114; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h28000400;
-    @(posedge clk) MAR <= 'h116; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h30000100;
-    @(posedge clk) MAR <= 'h118; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h08000000;
-    @(posedge clk) MAR <= 'h11A; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h7800000A;
-    @(posedge clk) MAR <= 'h11C; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
-    @(posedge clk) MAR <= 'h11E; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000000;
-    @(posedge clk) MAR <= 'h120; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000001;
-    @(posedge clk) MAR <= 'h122; we <= 1; cs <= 1; oe <= 0; testbench_data <= 'h78000001;
-    */ 
-
-
+        
     @(posedge clk) PC <= 'h100;
     
-    for (i = 0; i < 135; i = i+1) begin
+    for (i = 0; i < 500; i = i+1) begin
 
     $display("%h\n", MAR);
 
