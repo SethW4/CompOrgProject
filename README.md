@@ -1,6 +1,8 @@
 # CompOrgProject
 _____________________________________________________
 
+The writeup is titled "project.pdf" and is under the documentation folder. 
+_____________________________________________________
 Specs: 
 
 We're group 19. 
