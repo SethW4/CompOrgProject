@@ -153,7 +153,7 @@ module test_cpu;
         
     @(posedge clk) PC <= 'h100;
     
-    for (i = 0; i < 500; i = i+1) begin
+    for (i = 0; i < 125; i = i+1) begin
 
     $display("%h\n", MAR);
 
@@ -162,13 +162,13 @@ module test_cpu;
           @(posedge clk) IR <= data;
           @(posedge clk) PC <= PC + 2;
           // Decode and execute
-          case(IR[31:30])
+          case(IR[31])
           1'b0: begin            // Register addressing
 
 
           case(IR[30:27])
             4'b0000: begin  // add
-                  @(posedge clk) MAR <= IR[11:0];
+                  @(posedge clk) MAR <= IR[26:0];
                   @(posedge clk) MBR <= data;
                   @(posedge clk) ALU_Sel <= 'b001; A <= AC; B <= MBR;
                   @(posedge clk) AC <= ALU_Out;
@@ -177,16 +177,18 @@ module test_cpu;
                   $display("%h THIS HALTS!!!\n", MAR);  // This never halts. 
                   @(posedge clk) PC <= PC - 2;
 
+
                        
             end
             4'b0010: begin   // load
-                  @(posedge clk) MAR <= IR[11:0];
+                  @(posedge clk) MAR <= IR[26:0];
                   @(posedge clk) MBR <= data;
                   @(posedge clk) AC <= MBR;
-                  //$display("%b AC %h %d\n", AC, MAR, AC[11:0]);
+                  #1
+                  $display("%b AC %h %d\n", AC, MAR, AC[11:0]);
             end
             4'b0011: begin    // store
-                  @(posedge clk) MAR <= IR[11:0];
+                  @(posedge clk) MAR <= IR[26:0];
                   @(posedge clk) MBR <= AC;
                   @(posedge clk) we <= 1; oe <= 0; testbench_data <= MBR; 
             end
@@ -197,30 +199,30 @@ module test_cpu;
             4'b0101: begin  // skip 
                 //$display("%h THIS SKIPS!!!\n", MAR);
                 @(posedge clk)
-                if(IR[11:10]==2'b01 && AC == 0) PC <= PC + 2;
-                else if(IR[11:10]==2'b00 && AC < 0) PC <= PC + 2;
-                else if(IR[11:10]==2'b10 && AC > 0) PC <= PC + 2;
+                if(IR[11:10]==2'b01 && AC == 0) PC <= PC + 2; 
+                else if(IR[11:10]==2'b00 && AC < 0) PC <= PC + 2; 
+                else if(IR[11:10]==2'b10 && AC > 0) PC <= PC + 2; 
             end
             4'b0110: begin // jump
-              @(posedge clk) PC <= IR[11:0];
+              @(posedge clk) PC <= IR[26:0];
             end
 
             4'b0111: begin // subtract
-            @(posedge clk) MAR <= IR[11:0];
+            @(posedge clk) MAR <= IR[26:0];
             @(posedge clk) MBR <= data;
             @(posedge clk) ALU_Sel <= 'b010; A <= AC; B <= MBR;   
             @(posedge clk) AC <= ALU_Out;
             end
 
             4'b1000: begin // and
-            @(posedge clk) MAR <= IR[11:0];
+            @(posedge clk) MAR <= IR[26:0];
             @(posedge clk) MBR <= data;
             @(posedge clk) ALU_Sel <= 'b000; A <= AC; B <= MBR;   
             @(posedge clk) AC <= ALU_Out;
             end
 
             4'b1001: begin // or
-            @(posedge clk) MAR <= IR[11:0];
+            @(posedge clk) MAR <= IR[26:0];
             @(posedge clk) MBR <= data;
             @(posedge clk) ALU_Sel <= 'b100; A <= AC; B <= MBR;   
             @(posedge clk) AC <= ALU_Out;
@@ -237,19 +239,19 @@ module test_cpu;
 
           case(IR[30:27])
             4'b0000: begin  // addi 
-                  @(posedge clk) AC <= AC + IR[11:0];
+                  @(posedge clk) AC <= AC + IR[26:0];
             end 
 
             4'b0111: begin // subi 
-              @(posedge clk) AC <= AC - IR[11:0];
+              @(posedge clk) AC <= AC - IR[26:0];
             end
 
             4'b1000: begin // andi 
-              @(posedge clk) AC <= AC & IR[11:0];
+              @(posedge clk) AC <= AC & IR[26:0];
             end
 
             4'b1001: begin // ori 
-              @(posedge clk) AC <= AC | IR[11:0];
+              @(posedge clk) AC <= AC | IR[26:0];
             end
               
           endcase
