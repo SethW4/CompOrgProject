@@ -24,7 +24,7 @@ module single_port_sync_ram
     if (cs & we)
       mem[addr] <= data;
   end
-  
+
   always @ (negedge clk) begin
     if (cs & !we)
       tmp_data <= mem[addr];
