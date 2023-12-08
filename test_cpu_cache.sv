@@ -1,7 +1,7 @@
 `timescale 1 ns / 1 ps
 
 module test_cpu;
-  parameter ADDR_WIDTH = 28; // used to be 14
+  parameter ADDR_WIDTH = 26; // used to be 14
   parameter DATA_WIDTH = 32;
   
   reg osc;
