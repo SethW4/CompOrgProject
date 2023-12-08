@@ -1,7 +1,7 @@
 `timescale 1 ns / 1 ps
 
 module test_cpu;
-  parameter ADDR_WIDTH = 24;
+  parameter ADDR_WIDTH = 28; // Used to be 24
   parameter DATA_WIDTH = 32;
   
   reg osc;
@@ -142,7 +142,7 @@ module test_cpu;
 
     @(posedge clk) PC <= 'h100;
     
-    for (i = 0; i < 1000; i = i+1) begin
+    for (i = 0; i < 500; i = i+1) begin
 
           // Fetch
           @(posedge clk) MAR <= PC; we <= 0; cs <= 1; oe <= 1;

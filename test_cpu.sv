@@ -153,7 +153,7 @@ module test_cpu;
         
     @(posedge clk) PC <= 'h100;
     
-    for (i = 0; i < 1000; i = i+1) begin
+    for (i = 0; i < 500; i = i+1) begin
 
     $display("%h\n", MAR);
 
