@@ -2,9 +2,9 @@
 `timescale 1 ns / 1 ps
 
 module single_port_sync_ram
-  # (parameter ADDR_WIDTH = 14,
-     parameter DATA_WIDTH = 8,
-     parameter LENGTH = (1<<(ADDR_WIDTH+13)) // Length of a single chip is 2^27 bits. 
+  # (parameter ADDR_WIDTH = 12, // used to be 12 -- 26
+     parameter DATA_WIDTH = 16,
+     parameter LENGTH = (1<<ADDR_WIDTH)
     )
 
   (   input clk,
